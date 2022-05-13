@@ -1,6 +1,6 @@
 # https://www.codewars.com/kata/534e01fbbb17187c7e0000c6
 # Make a spiral (size >= 5)
-# Here is my solution, took about 4 hours
+# Here is my solution, took about 3,5 hours
 # No hints, no google
 
 # 0000000000
