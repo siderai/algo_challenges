@@ -1,7 +1,5 @@
 # https://www.codewars.com/kata/534e01fbbb17187c7e0000c6
-# Make a spiral (size >= 5)
-# Here is my solution, took about 3,5 hours
-# No hints, no google
+# Make a spiral
 
 # 0000000000
 # .........0
@@ -14,95 +12,99 @@
 # 0........0
 # 0000000000
 
-# Should return this:
-# [[1,1,1,1,1],[0,0,0,0,1],[1,1,1,0,1],[1,0,0,0,1],[1,1,1,1,1]]
+# Spiralize(5) should return this:
+# [[1,1,1,1,1],
+# [0,0,0,0,1],
+# [1,1,1,0,1],
+# [1,0,0,0,1],
+# [1,1,1,1,1]]
+
+def can_move(sample, l, c, ld, cd):
+    """
+    Check whether can move in specified direction
+    """
+    # Move once
+    l += ld
+    c += cd
+
+    # sample is a square
+    length = len(sample)
+
+    # Cannot move outside of minimap
+    if l < 0 or l >= length or c < 0 or c >= length:
+        return False
+
+    # Cannot move if occupied
+    if sample[l][c] == 1:
+        return False
+
+    # Move second time
+    l += ld
+    c += cd
+
+    # Can move if second move falls outside
+    if l < 0 or l >= length or c < 0 or c >= length:
+        return True
+
+    # Cannot move if second move is occupied
+    if sample[l][c] == 1:
+        return False
+
+    # Otherwise we can move
+    return True
+
 
 def spiralize(size):
-    # создаю болванку: массив нужного размера из нулей  
-    line = [0 for _ in range(size)]
-    sample = [line for _ in range(size)]
-    # Создаю курсор и храню его в словаре с двумя ключами: номер списка (вверх-вниз) и номер элемента (влево-вправо)
-    cursor = {'line': 0, 'column': 0, 'direction': 'right'}
-    
-    def spiral_walk_and_draw(cursor):
-        # read current state
-        line, column, direction = cursor['line'], cursor['column'], cursor['direction']
-        # replace initial zero with this value:
-        sample[line][column] = 1
-        # now move cursor
-        if direction = 'right':
-            # perimeter lap
-            try:             
-                next_item = sample[line][column + 1]
-            except IndexError:
-                change_direction(cursor)
-            else:
-                cursor['column'] += 1
-                # subsequet laps
-                try:
-                    next_next_item = sample[line][column + 2]
-                    if next_next_item = 1:
-                        change_direction(cursor)
-                except IndexError:
-                    pass
-        
-        elif direction = 'down':
-            # perimeter lap
-            try:
-                next_item = sample[line + 1][column]
-            except IndexError:
-                change_direction(cursor)
-            else:
-                cursor['line'] += 1
-                # subsequet laps
-                try:
-                    next_next_item = sample[line + 2][column]
-                    if next_next_item == 1:
-                        change_direction(cursor)
-                except IndexError:
-                    pass            
-  
-        elif direction = 'left':
-            try:
-                next_next_item = sample[line][column - 2]
-                is_enough_this_way = (next_next_item == 1 or line == 0)
-                if is_enough_this_way:
-                    change_direction(cursor)
-                else:
-                    cursor['column'] -= 1
-            except IndexError:
-                    pass
-     
-        elif direction = 'up':
-            try:
-                next_next_item = sample[line - 2][column]
-                is_enough_this_way = (next_next_item == 1 or line == 0)
-                if is_enough:
-                    change_direction(cursor)
-                else:
-                    cursor['line'] -= 1
-            except IndexError:
-                    pass
-  
+    # initial sample
+    sample = [[0 for line in range(size)] for column in range(size)]
 
-     def change_direction(cursor):
-        shifts = {
-            'right': 'down',
-            'down': 'left',
-            'left': 'up',
-            'up': 'right'
-        }
-        previous_dir = cursor['dir']
-        new_dir = shifts[previous_dir]
-        cursor['dir'] = new_dir
-    
-    # Рисую линию, начиная с верхней левой точки
-    # Механика поворота направо, меняю нули на единицы на своем пути
-    while True:
-        spiral_walk_and_draw(cursor)
-        if cursor['direction'] = 'STOP':
-            break
-     
-    # болванка изменена "на месте", теперь это спираль из матриц!
+    # create cursor to track line and column
+    l = c = 0
+
+    # initial direction
+    ld, cd = 0, 1
+
+    # draw a snake
+    idle_turns = 0
+    while idle_turns < 2:
+        sample[l][c] = 1
+
+        if can_move(sample, l, c, ld, cd):
+            # move
+            l += ld
+            c += cd
+            idle_turns = 0
+        else:
+            # turn clockwise:
+            ld, cd = cd, -ld
+            idle_turns += 1
+
+    # Last step
+    ld, cd = -cd, ld
+    if sample[l + ld][c + cd] == 1:
+        sample[l][c] = 0
+
+    # now sample is a spiral
     spiral = sample
     return spiral
+
+
+assert spiralize(5) == [
+    [1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 1],
+    [1, 1, 1, 0, 1],
+    [1, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1]
+]
+
+assert spiralize(9) == [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 1, 0, 1],
+    [1, 0, 1, 1, 1, 0, 1, 0, 1],
+    [1, 0, 1, 0, 0, 0, 1, 0, 1],
+    [1, 0, 1, 1, 1, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1]
+]
