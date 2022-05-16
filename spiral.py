@@ -21,7 +21,7 @@ def can_move(sample, l, c, ld, cd):
     l += ld
     c += cd
 
-    # sample is a square
+    # Sample is a square
     length = len(sample)
 
     # Cannot move outside of minimap
@@ -49,27 +49,27 @@ def can_move(sample, l, c, ld, cd):
 
 
 def spiralize(size):
-    # initial sample
+    # Initial sample
     sample = [[0 for line in range(size)] for column in range(size)]
 
-    # create cursor to track line and column
+    # Create cursor to track line and column
     l = c = 0
 
-    # initial direction
+    # Initial direction
     ld, cd = 0, 1
 
-    # draw a snake
+    # Draw a snake
     idle_turns = 0
     while idle_turns < 2:
         sample[l][c] = 1
 
         if can_move(sample, l, c, ld, cd):
-            # move
+            # Move
             l += ld
             c += cd
             idle_turns = 0
         else:
-            # turn clockwise:
+            # Turn clockwise:
             ld, cd = cd, -ld
             idle_turns += 1
 
@@ -78,7 +78,7 @@ def spiralize(size):
     if sample[l + ld][c + cd] == 1:
         sample[l][c] = 0
 
-    # now sample is a spiral
+    # Now sample is a spiral
     spiral = sample
     return spiral
 

@@ -1,4 +1,4 @@
-Here are some 'tricky' challenges on algorithms I have been into. 
+Here are some Codewars and Leetcode challenges on algorithms. 
 
 Sometimes I need to restore the fun of coding. This puzzles helped me take a break from my pet projects.
 The purpose is never to create the best solution, but to solve a puzzle completely on my own.
