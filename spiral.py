@@ -50,7 +50,7 @@ def can_move(sample, l, c, ld, cd):
 
 def spiralize(size):
     # Initial sample
-    sample = [[0 for line in range(size)] for column in range(size)]
+    sample = [[0 for column in range(size)] for line in range(size)]
 
     # Create cursor to track line and column
     l = c = 0
